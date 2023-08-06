@@ -37,11 +37,11 @@ body {
   background-color: gainsboro;
 }
 
-/*h1 {*/
-/*  font-weight: bold;*/
-/*  text-align:center;*/
-/*  font-size: 40px;*/
-/*}*/
+h1 {
+  font-weight: bold;
+  text-align:center;
+  font-size: 40px;
+}
 
 main {
   min-height: calc(100vh - 104px - 112px - 48px);
@@ -128,6 +128,10 @@ main {
   @apply absolute xl:top-12 xl:-right-1/2 -right-1/4 bg-hero-bg bg-repeat-round -z-10 w-full xl:h-screen h-[590px] overflow-hidden;
 }
 /* END: Hero styles */
+
+.dropdown {
+  @apply absolute right-0 top-full mt-3 w-full p-5 rounded-lg bg-white min-w-[150px] flex flex-col gap-2 justify-start items-start;
+}
 
 /*!* START: Home styles *!*/
 
