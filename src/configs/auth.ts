@@ -1,6 +1,5 @@
 import GoogleProvider from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
-import { User } from "next-auth";
 
 export const authConfig = {
   providers: [
@@ -20,59 +19,78 @@ export const authConfig = {
         };
         if (!email || !password) return null;
 
-        // TODO идем в бд и ищем юзера
+        const res = await fetch(
+          process.env.NEXT_PUBLIC_SERVER_URL + "/auth/login",
+          {
+            method: "POST",
+            body: JSON.stringify({ email, password }),
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+        const currentUser = await res.json();
 
-        const users = [
-          {
-            id: "1",
-            email: "test1@gmail.com",
-            name: "Test1",
-            password: "12345",
-            role: "admin",
-          },
-          {
-            id: "2",
-            email: "admin@gmail.com",
-            name: "Super Admin",
-            password: "12345",
-            role: "admin",
-          },
-          {
-            id: "3",
-            email: "any@gmail.com",
-            name: "Just a Guest",
-            password: "12345",
-            role: "guest",
-          },
-        ];
-
-        const currentUser = users.find((user) => user.email === email);
-        if (currentUser && currentUser.password === password) {
-          const { password, ...userWithoutPass } = currentUser;
-          return userWithoutPass as User;
+        if (currentUser && currentUser.authenticated) {
+          return currentUser;
         }
-
         return null;
       },
     }),
   ],
   callbacks: {
     async session({ session, token, user }) {
-      // find user and set it to session
+      console.log("session ", token);
+      session.user = token;
       return session;
     },
     async signIn({ user, account, profile, email, credentials }) {
+      console.log("signIn ");
       try {
         // connect to db
+        if (account.provider === "google") {
+          const res = await fetch(
+            process.env.NEXT_PUBLIC_SERVER_URL + "/auth/user",
+            {
+              method: "POST",
+              body: JSON.stringify({
+                idTokenString: account.id_token,
+                audience: profile.aud,
+                email: profile.email,
+                firstName: profile.given_name,
+                lastName: profile.family_name,
+              }),
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+          const currentUser = await res.json();
+          mapUser(user, currentUser);
+          console.log(currentUser);
+        }
         return true;
       } catch (error) {
         console.log(error);
         return false;
       }
     },
+    async jwt({ token, user }) {
+      console.log("jwt ", token);
+      return { ...token, ...user };
+    },
   },
-
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === "development",
   pages: {
     signIn: "/signin",
   },
 };
+
+function mapUser(user, currentUser) {
+  user.firstname = currentUser.firstname;
+  user.lastname = currentUser.lastname;
+  user.accessToken = currentUser.accessToken;
+  user.id = currentUser.id;
+  user.role = currentUser.role;
+  user.authenticated = currentUser.authenticated;
+  user.bucket = currentUser.bucket;
+  user.archive = currentUser.archive;
+  user.image = currentUser.image ? currentUser.image : user.image;
+}

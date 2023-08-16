@@ -1,12 +1,12 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { signIn, SignInResponse } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import type { FormEventHandler } from "react";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
-const SignInForm = () => {
+const SignUpForm = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -14,8 +14,6 @@ const SignInForm = () => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/profile";
 
   useEffect(() => {
     if (user.email.length > 0 && user.password.length > 0) {
@@ -30,20 +28,14 @@ const SignInForm = () => {
 
     try {
       setLoading(true);
-      const res: SignInResponse = await signIn("credentials", {
-        email: user.email,
-        password: user.password,
-        redirect: false,
-      });
-      if (res && !res.error) {
-        toast.success("Login successful");
-        router.push(callbackUrl);
-      } else {
-        toast.error(res.error);
+      const url = process.env.NEXT_PUBLIC_SERVER_URL + "/auth/register";
+      const res = await axios.post(url, user);
+      if (res) {
+        router.push("/signin");
       }
     } catch (e) {
       toast.error(e.message);
-      console.log("Login failed", e.message);
+      console.log("Signup failed", e.message);
     } finally {
       setLoading(false);
     }
@@ -80,7 +72,7 @@ const SignInForm = () => {
           }`}
           type="submit"
         >
-          <span className="flex-1">Войти</span>
+          <span className="flex-1">Зарегистрироваться</span>
         </button>
       </form>
       <Toaster />
@@ -88,4 +80,4 @@ const SignInForm = () => {
   );
 };
 
-export { SignInForm };
+export { SignUpForm };

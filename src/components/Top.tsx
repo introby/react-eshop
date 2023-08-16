@@ -3,9 +3,11 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { signIn, signOut, useSession, getProviders } from "next-auth/react";
+import { signOut, useSession, getProviders } from "next-auth/react";
 import provider from "@/components/Provider";
 import CustomButton from "@/components/CustomButton";
+import { ClientSafeProvider, LiteralUnion } from "next-auth/src/react/types";
+import { BuiltInProviderType } from "next-auth/src/providers";
 
 const Top = () => {
   const { data: session } = useSession();
@@ -17,7 +19,10 @@ const Top = () => {
 
   useEffect(() => {
     const setUpProviders = async () => {
-      const response: any = await getProviders();
+      const response: Record<
+        LiteralUnion<BuiltInProviderType>,
+        ClientSafeProvider
+      > = await getProviders();
 
       setProviders(response);
     };
