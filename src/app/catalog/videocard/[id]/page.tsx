@@ -11,10 +11,10 @@ export const generateMetadata = ({
   params: { id },
 }: Props): Promise<Metadata> => {
   return {
-    title: "CPU",
+    title: "Video card",
   };
 };
 
-const CpuItem = ({ params: { id } }: Props) => <ProductCard />;
+const VCItem = ({ params: { id } }: Props) => <ProductCard />;
 
-export default CpuItem;
+export default VCItem;
