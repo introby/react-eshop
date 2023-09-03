@@ -3,7 +3,7 @@ import Stripe from "stripe";
 import ProductListItem from "@/components/ProductListItem";
 
 export const metadata: Metadata = {
-  title: "CPU | Noliner shop",
+  title: "Video cards | Noliner shop",
 };
 
 async function getProducts() {
@@ -19,20 +19,19 @@ async function getProducts() {
   return res.data;
 }
 
-const Cpu = async () => {
+const VC = async () => {
   const products = await getProducts();
-  const cpus = products.filter(
-    (product) => product.product.metadata.type === "cpu",
+  const vcs = products.filter(
+    (product) => product.product.metadata.type === "vc",
   );
-  console.log(cpus);
 
   return (
     <>
-      <h1>Процессоры</h1>
+      <h1>Видеокарты</h1>
       <div className="p-4 flex flex-col">
         <div className="max-w-[1040px] w-full mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {cpus.map((cpu: any) => (
-            <ProductListItem key={cpu.id} item={cpu} />
+          {vcs.map((vc: any) => (
+            <ProductListItem key={vc.id} item={vc} />
           ))}
         </div>
       </div>
@@ -40,4 +39,4 @@ const Cpu = async () => {
   );
 };
 
-export default Cpu;
+export default VC;

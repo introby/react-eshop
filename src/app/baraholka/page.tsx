@@ -23,8 +23,12 @@ const Baraholka = () => {
   };
   return (
     <div>
-      <button type="button" onClick={fetchGet}>
-        Get Hello
+      <button
+        type="button"
+        onClick={fetchGet}
+        className="border border-solid border-slate-700"
+      >
+        Get data with token only
       </button>
       {hello}
     </div>

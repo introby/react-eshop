@@ -1,5 +1,4 @@
 import { MouseEventHandler } from "react";
-import { boolean } from "zod";
 
 export interface CustomButtonProps {
   title: string;
@@ -24,4 +23,9 @@ declare module "next-auth" {
   interface Session {
     user: User;
   }
+}
+
+export interface ItemProps {
+  price_id: string;
+  quantity: number;
 }

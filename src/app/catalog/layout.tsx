@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
 
@@ -13,7 +12,19 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
           <Link href="/catalog/cpu">Процессоры</Link>
         </li>
         <li>
+          <Link href="/catalog/videocard">Видеокарты</Link>
+        </li>
+        <li>
           <Link href="/catalog/motherboard">Материнские платы</Link>
+        </li>
+        <li>
+          <Link href="/catalog/dram">Оперативная память</Link>
+        </li>
+        <li>
+          <Link href="/catalog/hdd">Жесткие диски</Link>
+        </li>
+        <li>
+          <Link href="/catalog/ssd">SSD</Link>
         </li>
       </ul>
       {children}

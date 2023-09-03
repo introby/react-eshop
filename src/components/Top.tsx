@@ -8,10 +8,11 @@ import provider from "@/components/Provider";
 import CustomButton from "@/components/CustomButton";
 import { ClientSafeProvider, LiteralUnion } from "next-auth/src/react/types";
 import { BuiltInProviderType } from "next-auth/src/providers";
+import { useSelector } from "react-redux";
 
 const Top = () => {
   const { data: session } = useSession();
-
+  const items = useSelector((state) => state.cart.items);
   console.log(session);
 
   const [providers, setProviders] = useState(null);
@@ -77,7 +78,7 @@ const Top = () => {
                   <CustomButton
                     title="Выход"
                     key={provider.name}
-                    containerStyles="w-full bg-primary-blue text-white rounded-full"
+                    containerStyles="w-full bg-primary-blue text-white rounded-full hover:scale-110"
                     handleClick={() => signOut({ callbackUrl: "/" })}
                   />
                 </div>
@@ -86,7 +87,7 @@ const Top = () => {
           </>
         ) : (
           <>
-            <Link href="/signin">
+            <Link href="/signin" className="hover:scale-110">
               <CustomButton
                 title="Вход"
                 containerStyles="bg-primary-blue text-white rounded-full"
@@ -94,14 +95,17 @@ const Top = () => {
             </Link>
           </>
         )}
-        <Link href="/cart" className="flex gap-2">
+        <Link href="/cart" className="flex gap-2 ml-1 mr-1">
           <Image
             src="/assets/images/i-cart-black-stroke.svg"
             alt="Cart"
-            width={22}
-            height={19}
-            className="object-contain"
+            width={40}
+            height={40}
+            className="object-contain hover:scale-110"
           />
+          <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-primary-blue text-white text-center text-xs">
+            {items.length}
+          </span>
         </Link>
       </div>
     </div>

@@ -1,5 +1,3 @@
-import React from "react";
-
 const Payments = () => {
   return (
     <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
