@@ -1,20 +1,23 @@
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import ProductCard from "@/components/ProductCard";
+import React from "react";
+import { getTitle } from "@/Helper";
 
-type Props = {
-  params: {
-    id: string;
-  };
+type CpuItemProps = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export const generateMetadata = ({
-  params: { id },
-}: Props): Promise<Metadata> => {
+export async function generateMetadata(
+  { params, searchParams }: CpuItemProps,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const title = await getTitle(params.id);
   return {
-    title: "CPU",
+    title,
   };
-};
+}
 
-const CpuItem = ({ params: { id } }: Props) => <ProductCard />;
+const CpuItem: React.FC = () => <ProductCard />;
 
 export default CpuItem;

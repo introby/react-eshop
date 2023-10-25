@@ -25,7 +25,9 @@ declare module "next-auth" {
   }
 }
 
-export interface ItemProps {
-  price_id: string;
-  quantity: number;
+export interface Tile {
+  link: string;
+  imgUrl: string;
+  name: string;
+  description: string;
 }

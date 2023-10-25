@@ -10,7 +10,7 @@ type ProviderProps = {
   session: SessionProps["session"];
 };
 
-const Provider = ({ children, session }: ProviderProps) => {
+const Provider: React.FC<ProviderProps> = ({ children, session }) => {
   return <SessionProvider session={session}>{children}</SessionProvider>;
 };
 

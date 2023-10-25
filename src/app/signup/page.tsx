@@ -1,6 +1,7 @@
 import { SignUpForm } from "@/components/SignUpForm";
+import React from "react";
 
-const SignUp = () => {
+const SignUp: React.FC = () => {
   return (
     <div className="flex-center flex-col gap-2 w-1/5 border-2 m-auto pt-8 pb-8">
       <h1 className="text-left">Регистрация</h1>

@@ -2,7 +2,7 @@ import React from "react";
 import Top from "@/components/Top";
 import Nav from "@/components/Nav";
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
     <header>
       <Nav />

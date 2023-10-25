@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Барахолка | Noliner shop",
 };
 
-const Baraholka = () => {
+const Baraholka: React.FC = () => {
   const { data: session } = useSession();
   const [hello, setHello] = useState("");
   const fetchGet = async () => {

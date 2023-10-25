@@ -1,14 +1,19 @@
 import Link from "next/link";
 import { Metadata } from "next";
-import { getServerSession, Session } from "next-auth";
+import { AuthOptions, getServerSession, Session } from "next-auth";
 import { authConfig } from "@/configs/auth";
 import Image from "next/image";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "Profile | Noliner shop",
 };
-const ProfileLayout = async ({ children }: { children: React.ReactNode }) => {
-  const session: Session = await getServerSession(authConfig);
+const ProfileLayout: React.FC = async ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const session: Session | null = await getServerSession(authConfig);
   const lastName = session?.user?.lastname || "";
   const name = session?.user?.firstname + " " + lastName;
   return (

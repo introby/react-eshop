@@ -10,12 +10,15 @@ import { ClientSafeProvider, LiteralUnion } from "next-auth/src/react/types";
 import { BuiltInProviderType } from "next-auth/src/providers";
 import { useSelector } from "react-redux";
 
-const Top = () => {
+const Top: React.FC = () => {
   const { data: session } = useSession();
   const items = useSelector((state) => state.cart.items);
   console.log(session);
 
-  const [providers, setProviders] = useState(null);
+  const [providers, setProviders] =
+    useState<Record<LiteralUnion<BuiltInProviderType>, ClientSafeProvider>>(
+      null,
+    );
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {
@@ -23,7 +26,7 @@ const Top = () => {
       const response: Record<
         LiteralUnion<BuiltInProviderType>,
         ClientSafeProvider
-      > = await getProviders();
+      > | null = await getProviders();
 
       setProviders(response);
     };

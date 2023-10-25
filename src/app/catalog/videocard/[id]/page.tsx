@@ -1,20 +1,23 @@
 import { Metadata } from "next";
 import ProductCard from "@/components/ProductCard";
+import React from "react";
+import { getTitle } from "@/Helper";
 
-type Props = {
+type VCItemProps = {
   params: {
     id: string;
   };
 };
 
-export const generateMetadata = ({
-  params: { id },
-}: Props): Promise<Metadata> => {
+export async function generateMetadata({
+  params,
+}: VCItemProps): Promise<Metadata> {
+  const title = await getTitle(params.id);
   return {
-    title: "Video card",
+    title,
   };
-};
+}
 
-const VCItem = ({ params: { id } }: Props) => <ProductCard />;
+const VCItem: React.FC = () => <ProductCard />;
 
 export default VCItem;

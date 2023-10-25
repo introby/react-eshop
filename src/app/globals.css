@@ -33,7 +33,7 @@ body {
   /*    rgb(var(--background-end-rgb))*/
   /*  )*/
   /*  rgb(var(--background-start-rgb));*/
-  width: 1400px;
+  max-width: 1400px;
   margin: 0 auto;
   background-color: gainsboro;
 }
@@ -288,3 +288,91 @@ main {
 /*  @apply cursor-default select-none py-2 pl-10 pr-4;*/
 /*}*/
 /*!* END: search manufacturer styles *!*/
+
+.b-tile {
+  width: 100%;
+  margin-bottom: 1px;
+  float: left;
+  /*position: relative;*/
+  overflow: hidden;
+  box-shadow: 0 0 0 1px #fff;
+}
+
+.b-tile-main {
+  /*padding: 39px 20px 10px;*/
+  /*display: block;*/
+  position: relative;
+  /*top: 0;*/
+  /*right: 0;*/
+  /*bottom: 0;*/
+  /*left: 0;*/
+  /*z-index: 12*/
+}
+
+.b-tile-header {
+  padding: 0 0 4px;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 27px;
+  position: absolute;
+  color: white;
+}
+
+.b-tile-excerpt {
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 400;
+  position: absolute;
+  color: white;
+}
+
+.b-tile-grad {
+  /*display: block;*/
+  position: absolute;
+  /*top: 0;*/
+  /*right: 0;*/
+  /*bottom: 0;*/
+  /*left: 0;*/
+  /*z-index: 11;*/
+  /*!*opacity: .5;*!*/
+  /*-o-transition: opacity .2s ease;*/
+  /*transition: opacity .2s ease*/
+}
+
+.tile-container {
+  position: relative;
+  box-shadow: 0 0 0 1px #fff;
+}
+
+.tile-link {
+  display: block;
+  text-decoration: none;
+}
+
+.tile-img {
+  width: 100%;
+  /*height: 85%;*/
+}
+
+.tile-name, .tile-description {
+  position: absolute;
+  color: white;
+  padding: 0 0 4px;
+  font-weight: 400;
+  z-index: 1;
+}
+
+.tile-name {
+  top: 0;
+  left: 0;
+  font-size: 25px;
+  line-height: 27px;
+
+}
+
+.tile-description {
+  top: 30px;
+  left: 0;
+  font-size: 15px;
+  line-height: 17px;
+}

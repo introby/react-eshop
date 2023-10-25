@@ -1,34 +1,33 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ItemProps } from "@/types";
 import Stripe from "stripe";
+import toast from "react-hot-toast";
 
-type InitialStateType = {
-  items: [];
-  product: Stripe.Price;
+interface CartSliceState {
+  items: Stripe.Price[];
+  product: Stripe.Price | null;
+}
+
+const initialState: CartSliceState = {
+  items: [],
+  product: null,
 };
-
-const initialState = {
-  items: [] as ItemProps[],
-  product: null as Stripe.Price,
-} as InitialStateType;
 
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addToCart(state, action) {
-      console.log(state);
-      console.log(action);
-      state.items.push(action.payload.item);
+    addToCart(state, action: PayloadAction<Stripe.Price>) {
+      state.items.push(action.payload);
+      toast.success("Item added successfully");
     },
-    removeFromCart(state, action) {
-      state.items = state.items.filter((item) => item.id === action.payload.id);
+    removeFromCart(state, action: PayloadAction<Stripe.Price>) {
+      state.items = state.items.filter((item) => item.id !== action.payload.id);
     },
     emptyCart(state, action) {
       state.items = [];
     },
-    setProduct(state, action) {
-      state.product = action.payload.item;
+    setProduct(state, action: PayloadAction<Stripe.Price>) {
+      state.product = action.payload;
     },
   },
 });

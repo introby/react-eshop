@@ -1,10 +1,16 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "Catalog | Noliner shop",
 };
-const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
+
+type ProfileLayoutProps = {
+  children: React.ReactNode;
+};
+
+const ProfileLayout: React.FC<ProfileLayoutProps> = ({ children }) => {
   return (
     <div>
       <ul className="flex flex-wrap justify-center items-center mx-auto max-w-screen-xl space-x-4">
