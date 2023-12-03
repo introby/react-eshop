@@ -2,15 +2,12 @@ import Stripe from "stripe";
 
 export async function getTitle(priceId: string) {
   const price: Stripe.Price = await stripe.prices.retrieve(priceId);
-  let title: string;
   const product = price.product;
   if (typeof product === "string") {
     const prod: Stripe.Product = await stripe.products.retrieve(product);
-    title = prod.name;
-  } else {
-    title = isStripeProduct(product) ? product.name : "";
+    return prod.name;
   }
-  return title;
+  return isStripeProduct(product) ? product.name : "";
 }
 
 export function isStripeProduct(
@@ -19,10 +16,17 @@ export function isStripeProduct(
   return true;
 }
 
-export const stripe = new Stripe(
-  process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY ?? "",
-  {
-    apiVersion: "2023-08-16",
-    typescript: true,
-  },
-);
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
+  apiVersion: "2023-08-16",
+  typescript: true,
+});
+
+export async function getProducts(type: "vc" | "cpu") {
+  const res = await stripe.prices.list({
+    expand: ["data.product"],
+  });
+
+  return res.data.filter(
+    (product) => (product.product as Stripe.Product).metadata.type === type,
+  );
+}

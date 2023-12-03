@@ -2,6 +2,8 @@ import GoogleProvider from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import { AuthOptions, User } from "next-auth";
 import { Provider } from "next-auth/providers";
+import { UserProfile } from "@/types";
+import {AdapterUser} from "next-auth/adapters";
 
 const options: any = { // TODO: any
   credentials: {
@@ -23,7 +25,7 @@ const options: any = { // TODO: any
         headers: { "Content-Type": "application/json" },
       },
     );
-    const currentUser = await res.json();
+    const currentUser: User = await res.json();
 
     if (currentUser && currentUser.authenticated) {
       return currentUser;
@@ -51,16 +53,17 @@ export const authConfig: AuthOptions = {
       try {
         // connect to db
         if (account?.provider === "google") {
+          const userProfile: UserProfile = profile as UserProfile;
           const res = await fetch(
             process.env.NEXT_PUBLIC_SERVER_URL + "/auth/user",
             {
               method: "POST",
               body: JSON.stringify({
                 idTokenString: account.id_token,
-                audience: profile.aud,
-                email: profile.email,
-                firstName: profile.given_name,
-                lastName: profile.family_name,
+                audience: userProfile.aud,
+                email: userProfile.email,
+                firstName: userProfile.given_name,
+                lastName: userProfile.family_name,
               }),
               headers: { "Content-Type": "application/json" },
             },

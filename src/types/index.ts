@@ -5,6 +5,7 @@ export interface CustomButtonProps {
   type?: string;
   containerStyles?: string;
   handleClick?: MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
 }
 
 declare module "next-auth" {
@@ -30,4 +31,14 @@ export interface Tile {
   imgUrl: string;
   name: string;
   description: string;
+}
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+  aud: string;
+  given_name: string;
+  family_name: string;
 }

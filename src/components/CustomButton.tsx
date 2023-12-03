@@ -7,10 +7,11 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   title,
   containerStyles,
   handleClick,
+  disabled = false,
 }) => {
   return (
     <button
-      disabled={false}
+      disabled={disabled}
       type={"button"}
       className={`custom-btn ${containerStyles}`}
       onClick={handleClick}

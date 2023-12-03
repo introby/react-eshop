@@ -5,9 +5,10 @@ import { useSelector } from "react-redux";
 import Stripe from "stripe";
 import { addToCart } from "@/redux/features/cartSlice";
 import { Toaster } from "react-hot-toast";
-import React from "react";
+import React, { useEffect } from "react";
 import { isStripeProduct } from "@/Helper";
 import { useAppDispatch } from "@/redux/store";
+import { router } from "next/client";
 
 const ProductCard: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -15,15 +16,17 @@ const ProductCard: React.FC = () => {
   const product: Stripe.Product | null = isStripeProduct(stripeItem.product)
     ? stripeItem.product
     : null;
-  const addItemToCart = (newItem) => dispatch(addToCart(newItem));
 
   const handleAddToCart = () => {
-    addItemToCart(stripeItem);
+    dispatch(addToCart(stripeItem));
   };
 
-  if (!product?.name) {
-    window.location.href = "/catalog";
-  }
+  useEffect(() => {
+    if (!product?.name) {
+      router.push("/catalog");
+    }
+  }, [product, router]);
+
   return (
     <>
       <div className="flex flex-col">
@@ -38,7 +41,11 @@ const ProductCard: React.FC = () => {
           <div className="flex flex-col gap-2 p-4">
             <div className="flex md:flex-col md:items-start text-xl items-center justify-between gap-2">
               <h3>{product?.name}</h3>
-              <p className="md:text-base">{stripeItem.unit_amount / 100} BYN</p>
+              <p className="md:text-base">
+                {stripeItem.unit_amount
+                  ? stripeItem.unit_amount / 100 + " BYN"
+                  : "Нет данных"}
+              </p>
             </div>
             <p className="text-sm">{product?.description}</p>
 

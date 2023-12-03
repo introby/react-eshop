@@ -15,10 +15,10 @@ const Top: React.FC = () => {
   const items = useSelector((state) => state.cart.items);
   console.log(session);
 
-  const [providers, setProviders] =
-    useState<Record<LiteralUnion<BuiltInProviderType>, ClientSafeProvider>>(
-      null,
-    );
+  const [providers, setProviders] = useState<Record<
+    LiteralUnion<BuiltInProviderType>,
+    ClientSafeProvider
+  > | null>(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {

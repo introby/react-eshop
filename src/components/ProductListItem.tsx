@@ -11,7 +11,7 @@ type ProductListItemProps = {
 
 const ProductListItem: React.FC<ProductListItemProps> = ({ item }) => {
   const { id, unit_amount, product } = item;
-  const { name, description } = product;
+  const { name, description } = isStripeProduct(product) && product;
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -26,7 +26,9 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ item }) => {
     return true;
   }
 
-  const [img] = isStripeProduct(product) ? product.images : undefined;
+  const [img] = isStripeProduct(product)
+    ? product.images
+    : "/assets/images/catalog/default-image.png";
 
   return (
     <div

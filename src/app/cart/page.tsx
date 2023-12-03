@@ -1,17 +1,11 @@
 "use client";
 
-import { Metadata } from "next";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Stripe from "stripe";
 import { useSelector } from "react-redux";
 import React from "react";
 import { isStripeProduct } from "@/Helper";
-import {RootState} from "@/redux/store";
-
-export const metadata: Metadata = {
-  title: "Cart | Noliner shop",
-};
 
 const Cart: React.FC = () => {
   const router = useRouter();

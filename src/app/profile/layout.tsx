@@ -8,7 +8,10 @@ import React from "react";
 export const metadata: Metadata = {
   title: "Profile | Noliner shop",
 };
-const ProfileLayout: React.FC = async ({
+
+type ProfileProps = { children: React.ReactNode };
+
+const ProfileLayout: React.FC<ProfileProps> = async ({
   children,
 }: {
   children: React.ReactNode;

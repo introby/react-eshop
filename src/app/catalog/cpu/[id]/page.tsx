@@ -5,13 +5,11 @@ import { getTitle } from "@/Helper";
 
 type CpuItemProps = {
   params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata(
-  { params, searchParams }: CpuItemProps,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: CpuItemProps): Promise<Metadata> {
   const title = await getTitle(params.id);
   return {
     title,
