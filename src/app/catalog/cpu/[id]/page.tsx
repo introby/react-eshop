@@ -1,43 +1,21 @@
+import { Metadata, ResolvingMetadata } from "next";
+import ProductCard from "@/components/ProductCard";
 import React from "react";
-import { Metadata } from "next";
+import { getTitle } from "@/Helper";
 
-type Props = {
-  params: {
-    id: string;
-  };
+type CpuItemProps = {
+  params: { id: string };
 };
 
-async function getData(id: string) {
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${id}`,
-    {
-      next: {
-        revalidate: 600,
-      },
-    },
-  );
-
-  return response.json();
+export async function generateMetadata({
+  params,
+}: CpuItemProps): Promise<Metadata> {
+  const title = await getTitle(params.id);
+  return {
+    title,
+  };
 }
 
-export const generateMetadata = async ({
-  params: { id },
-}: Props): Promise<Metadata> => {
-  const post = await getData(id);
-  return {
-    title: post.title,
-  };
-};
-
-const CpuItem = async ({ params: { id } }: Props) => {
-  const post = await getData(id);
-  return (
-    <>
-      <h1>{post.title}</h1>
-      <br />
-      <p>{post.body}</p>
-    </>
-  );
-};
+const CpuItem: React.FC = () => <ProductCard />;
 
 export default CpuItem;

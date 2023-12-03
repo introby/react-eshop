@@ -1,41 +1,47 @@
 import GoogleProvider from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
+import { AuthOptions, User } from "next-auth";
+import { Provider } from "next-auth/providers";
+import { UserProfile } from "@/types";
+import {AdapterUser} from "next-auth/adapters";
 
-export const authConfig = {
+const options: any = { // TODO: any
+  credentials: {
+    email: { label: "email", type: "email", required: true },
+    password: { label: "password", type: "password", required: true },
+  },
+  async authorize(credentials) {
+    const { email, password } = credentials as {
+      email: string;
+      password: string;
+    };
+    if (!email || !password) return null;
+
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_SERVER_URL + "/auth/login",
+      {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+    const currentUser: User = await res.json();
+
+    if (currentUser && currentUser.authenticated) {
+      return currentUser;
+    }
+    return null;
+  },
+};
+
+export const authConfig: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_SECRET!,
     }),
-    Credentials({
-      credentials: {
-        email: { label: "email", type: "email", required: true },
-        password: { label: "password", type: "password", required: true },
-      },
-      async authorize(credentials) {
-        const { email, password } = credentials as {
-          email: string;
-          password: string;
-        };
-        if (!email || !password) return null;
-
-        const res = await fetch(
-          process.env.NEXT_PUBLIC_SERVER_URL + "/auth/login",
-          {
-            method: "POST",
-            body: JSON.stringify({ email, password }),
-            headers: { "Content-Type": "application/json" },
-          },
-        );
-        const currentUser = await res.json();
-
-        if (currentUser && currentUser.authenticated) {
-          return currentUser;
-        }
-        return null;
-      },
-    }),
-  ],
+    Credentials(options),
+  ] as Provider[],
   callbacks: {
     async session({ session, token, user }) {
       console.log("session ", token);
@@ -46,17 +52,18 @@ export const authConfig = {
       console.log("signIn ");
       try {
         // connect to db
-        if (account.provider === "google") {
+        if (account?.provider === "google") {
+          const userProfile: UserProfile = profile as UserProfile;
           const res = await fetch(
             process.env.NEXT_PUBLIC_SERVER_URL + "/auth/user",
             {
               method: "POST",
               body: JSON.stringify({
                 idTokenString: account.id_token,
-                audience: profile.aud,
-                email: profile.email,
-                firstName: profile.given_name,
-                lastName: profile.family_name,
+                audience: userProfile.aud,
+                email: userProfile.email,
+                firstName: userProfile.given_name,
+                lastName: userProfile.family_name,
               }),
               headers: { "Content-Type": "application/json" },
             },
@@ -83,7 +90,7 @@ export const authConfig = {
   },
 };
 
-function mapUser(user, currentUser) {
+function mapUser(user: User, currentUser: User) {
   user.firstname = currentUser.firstname;
   user.lastname = currentUser.lastname;
   user.accessToken = currentUser.accessToken;

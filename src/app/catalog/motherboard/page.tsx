@@ -1,11 +1,11 @@
-import React from "react";
 import { Metadata } from "next";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "Motherboard | Noliner shop",
 };
 
-const Motherboard = () => {
+const Motherboard: React.FC = () => {
   return <div>Motherboard page</div>;
 };
 

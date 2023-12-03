@@ -1,6 +1,6 @@
 import React from "react";
 
-const Feed = () => {
+const Feed: React.FC = () => {
   return <div>Feed component</div>;
 };
 

@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
-const SignUpForm = () => {
+const SignUpForm: React.FC = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",

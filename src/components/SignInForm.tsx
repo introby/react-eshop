@@ -1,13 +1,13 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { signIn, SignInResponse } from "next-auth/react";
+import { signIn, SignInOptions, SignInResponse } from "next-auth/react";
 import type { FormEventHandler } from "react";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
-const SignInForm = () => {
-  const [user, setUser] = useState({
+const SignInForm: React.FC = () => {
+  const [user, setUser] = useState<{ email: string; password: string }>({
     email: "",
     password: "",
   });
@@ -28,25 +28,28 @@ const SignInForm = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
-    try {
-      setLoading(true);
-      const res: SignInResponse = await signIn("credentials", {
-        email: user.email,
-        password: user.password,
-        redirect: false,
+    setLoading(true);
+
+    const options: SignInOptions = {
+      email: user.email,
+      password: user.password,
+      redirect: false,
+    };
+
+    signIn("credentials", options)
+      .then((res: SignInResponse | undefined) => {
+        if (res && !res.error) {
+          toast.success("Login successful");
+          router.push(callbackUrl);
+        } else if (res && res.error) {
+          toast.error(res.error ? res.error : "Sign in failed");
+        }
+        setLoading(false);
+      })
+      .catch((e: ErrorEvent) => {
+        toast.error(e.message);
+        setLoading(false);
       });
-      if (res && !res.error) {
-        toast.success("Login successful");
-        router.push(callbackUrl);
-      } else {
-        toast.error(res.error);
-      }
-    } catch (e) {
-      toast.error(e.message);
-      console.log("Login failed", e.message);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (

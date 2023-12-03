@@ -3,8 +3,9 @@
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import CustomButton from "@/components/CustomButton";
+import React from "react";
 
-const GoogleButton = () => {
+const GoogleButton: React.FC = () => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/profile";
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-const PersonalInfo = () => {
+const PersonalInfo: React.FC = () => {
   return (
     <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
       <div className="max-w-screen-md mb-8 lg:mb-16">

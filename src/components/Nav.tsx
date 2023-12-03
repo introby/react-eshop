@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-const Nav = () => {
+const Nav: React.FC = () => {
   return (
     <nav className="flex-start w-full p-3 space-x-4 bg-amber-400">
       <Link href="/catalog" className="flex gap-2 flex-center">

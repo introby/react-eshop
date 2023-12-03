@@ -1,11 +1,11 @@
 import { MouseEventHandler } from "react";
-import { boolean } from "zod";
 
 export interface CustomButtonProps {
   title: string;
   type?: string;
   containerStyles?: string;
   handleClick?: MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
 }
 
 declare module "next-auth" {
@@ -24,4 +24,21 @@ declare module "next-auth" {
   interface Session {
     user: User;
   }
+}
+
+export interface Tile {
+  link: string;
+  imgUrl: string;
+  name: string;
+  description: string;
+}
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+  aud: string;
+  given_name: string;
+  family_name: string;
 }
